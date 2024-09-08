@@ -7,6 +7,81 @@ void main() {
   runApp(const MainApp());
 }
 
+Widget _flightShuttle(
+  BuildContext flightContext,
+  Animation<double> animation,
+  HeroFlightDirection flightDirection,
+  BuildContext fromHeroContext,
+  BuildContext toHeroContext,
+) {
+  final Hero toHero = toHeroContext.widget as Hero;
+
+  const curveRotation = Curves.easeInOut;
+  const curveStart = Curves.easeIn;
+  const curveEnd = Curves.easeOut;
+
+  const colorStart = Colors.black;
+  const colorEnd = Colors.red;
+
+  const scaleStart = 1.0;
+  const scaleEnd = 0.7;
+
+  return RotationTransition(
+    turns: Tween(begin: 0.0, end: 2.0)
+        .chain(CurveTween(curve: curveRotation))
+        .animate(animation),
+    child: DecoratedBoxTransition(
+      decoration: TweenSequence([
+        TweenSequenceItem(
+          tween: DecorationTween(
+            begin: BoxDecoration(
+              color: colorStart,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            end: BoxDecoration(
+              color: colorEnd,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ).chain(CurveTween(curve: curveStart)),
+          weight: 50,
+        ),
+        TweenSequenceItem(
+          tween: DecorationTween(
+            begin: BoxDecoration(
+              color: colorEnd,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            end: BoxDecoration(
+              color: colorStart,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ).chain(CurveTween(curve: curveEnd)),
+          weight: 50,
+        ),
+      ]).animate(animation),
+      child: ScaleTransition(
+        scale: TweenSequence([
+          TweenSequenceItem(
+            tween: Tween(
+              begin: scaleStart,
+              end: scaleEnd,
+            ).chain(CurveTween(curve: curveStart)),
+            weight: 50,
+          ),
+          TweenSequenceItem(
+            tween: Tween(
+              begin: scaleEnd,
+              end: scaleStart,
+            ).chain(CurveTween(curve: curveEnd)),
+            weight: 50,
+          ),
+        ]).animate(animation),
+        child: toHero.child,
+      ),
+    ),
+  );
+}
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -37,6 +112,7 @@ class MainApp extends StatelessWidget {
                 const Center(
                   child: Hero(
                     tag: 'unique',
+                    flightShuttleBuilder: _flightShuttle,
                     child: IconContainer(),
                   ),
                 ),
@@ -102,7 +178,11 @@ class SecondPage extends StatelessWidget {
             ),
             const SizedBox(height: 64.0),
             const Center(
-              child: IconContainer(),
+              child: Hero(
+                tag: 'unique',
+                flightShuttleBuilder: _flightShuttle,
+                child: IconContainer(),
+              ),
             ),
           ],
         ),

@@ -65,8 +65,19 @@ class MainApp extends StatelessWidget {
                     onPressed: () => Navigator.of(context).push(
                       /// TODO: maybe there is another Route we can use
                       /// here ;)
-                      MaterialPageRoute(
-                        builder: (context) => const SecondPage(),
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const SecondPage(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) =>
+                                SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(1, 1),
+                            end: const Offset(0, 0),
+                          )
+                              .chain(CurveTween(curve: Curves.bounceIn))
+                              .animate(animation),
+                        ),
                       ),
                     ),
                     child: const Text('Navigate'),
