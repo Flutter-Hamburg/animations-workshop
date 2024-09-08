@@ -27,7 +27,7 @@ Suggested steps:
 
 ## hero.dart
 
-https://github.com/user-attachments/assets/07f61855-9c13-4409-9dbf-2ed39bc69704
+https://github.com/user-attachments/assets/eafa62fe-2e20-47f7-b7b3-2a1e093b9d85
 
 Also part of page transitions: the Hero widget! You might know this one already, but have you used it extensively? This widget is used to animate a "fly-over" of an existing widget on one page to the same widget on the new page while transitioning between pages. Combined with a custom PageTransition (but already with the default one), this can create cool animations for the user to grasp and allows to shift the focus on the specific elements in your app!
 
